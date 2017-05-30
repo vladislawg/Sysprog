@@ -1,5 +1,6 @@
 #include "../Tasks/TaskPool.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifndef SCHEDULE_FCFS_H
 #define SCHEDULE_FCFS_H
