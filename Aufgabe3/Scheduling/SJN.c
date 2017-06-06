@@ -1,5 +1,5 @@
 #include "SJN.h"
-#include "Queue.h"
+#include "PriorityQueue.h"
 
 
 

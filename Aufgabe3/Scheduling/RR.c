@@ -14,7 +14,6 @@ void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
   int runtime = 0;
 
   while (!allDone(task_pool)) {
-      //NOTE: This is where you COULD check for new arrivals at the current tick...
       newTask = checkArrivals(task_pool, current_tick);
       if(newTask != NULL){
         if(current == NULL){
@@ -62,19 +61,13 @@ void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
       if (current != NULL) CPU = current -> task;
       else CPU = NULL;
 
-
-      //NOTE: This is where you COULD select a Task for execution, based on the
-      //      specifications of the algorithm (in this case randomness)...
-
-      //NOTE: This is where you execute the Task for however long you need...
-      //      (Could be one tick, could be several... it really depends on YOUR OWN ideas).
       if (execTask(CPU, 1) < 0) {
           printf("%sERROR:%s No Task selected to be executed.\n", COLOR_RED, COLOR_RESET);
           break;
       }
       current_tick ++;
       runtime ++;
-      //NOTE: This is where you COULD increase a variable, holding the current tick...
+
   }
   printf("\n");
 

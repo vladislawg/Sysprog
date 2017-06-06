@@ -17,6 +17,8 @@ set(SOURCE_FILES
         Scheduling/SJN.c
         Scheduling/RR.c
         Scheduling/MLF.c
+        Scheduling/PriorityQueue.c
+        Scheduling/Queue.c
         main.c)
 
 add_executable(scheduler ${SOURCE_FILES})

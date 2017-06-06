@@ -1,25 +1,26 @@
-#include "../Tasks/TaskPool.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-typedef struct q_elem_s
-{
-	Task *task;
-  uint16_t arrival;
-  uint16_t total;
-	struct q_elem_s *next;
-}q_elem;
+//#include "../Tasks/TaskPool.h"
 
-typedef struct _PrioQueue
-{
-	int size;
-	q_elem *root;
-}PrioQueue;
+typedef struct _Element{
+  void *data;
+  struct _Element *next;
+}Element;
+
+typedef struct _Queue{
+  int size;
+  Element *root;
+  unsigned long int zeitscheibe;
+}Queue;
 
 
-PrioQueue *createQueue();
-q_elem* q_elem_new(Task *task, uint16_t arrival, uint16_t total);
-int pqueue_offer(PrioQueue *queue, q_elem* newElem);
-void pqueue_print(PrioQueue *queue);
-Task* pqueue_peek(PrioQueue *queue);
-Task* pqueue_poll(PrioQueue *queue);
+int isEmpty(Queue *q);
+Element *create_Element(void *data);
+Queue *create_Queue();
+void queue_free(Queue *q);
+void *queue_offer(Queue *q, void *data);
+void *queue_peek(Queue *q);
+void *queue_poll(Queue *q);
+int queue_size(Queue *q);
+void print_queue(Queue *q);
