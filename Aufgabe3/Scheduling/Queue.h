@@ -10,8 +10,8 @@ typedef struct _Element{
 
 typedef struct _Queue{
   int size;
-  Element *root;
-  unsigned long int zeitscheibe;
+  Element *head;
+  Element *tail;
 }Queue;
 
 

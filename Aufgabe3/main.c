@@ -40,9 +40,9 @@ int main(int argc, char *argv[]) {
     printf("\nRR:     ");
     schedule(task_pool, RR, 2);
 
-    // allReset(task_pool);
-    // printf("MLF:    ");
-    // schedule(task_pool, MLF, MLF_args);
+    allReset(task_pool);
+    printf("MLF:    ");
+    schedule(task_pool, MLF, MLF_args);
 
     freeTaskPool(task_pool);
 
