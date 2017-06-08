@@ -1,6 +1,14 @@
 #include "MLF.h"
 #include "Queue.h"
 
+#define INFINITY 1000000
+
+static int num;
+static int used;
+//static def_task *task;
+static Queue *task_queue;
+static int task_queue_idx;
+
 Queue **create_queue_array(uint16_t num_levels){
   Queue **q = malloc(num_levels);
   if(q == NULL){
@@ -21,8 +29,14 @@ Queue **create_queue_array(uint16_t num_levels){
 void schedule_MLF(const TaskPool *task_pool, uint16_t num_levels) {
   Queue **q = create_queue_array(num_levels);
 
+  for(int i = 0; i < num_levels; i++){
+    q[i] = create_Queue();
+    q[i] -> zeitscheibe = i;
+  }
 
-  srand(time(NULL));
+  q[num_levels-1]-> zeitscheibe = INFINITY;
+
+
   Task *CPU = NULL;
 
   while (!allDone(task_pool)) {

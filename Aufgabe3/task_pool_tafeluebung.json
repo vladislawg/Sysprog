@@ -39,5 +39,5 @@
     ],
 
     "RR_MAX_QUANTUM": 2,
-    "MLF_NUM_QUEUES": 4        
+    "MLF_NUM_QUEUES": 4
 }
