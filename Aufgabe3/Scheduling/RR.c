@@ -9,10 +9,10 @@ typedef struct _CicleElement{
 void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
   Task *CPU = NULL;
   CircleElement *current = NULL;
+  CircleElement *temp = NULL;
   Task *newTask = NULL;
   int current_tick = 0;
   int runtime = 0;
-
   while (!allDone(task_pool)) {
       newTask = checkArrivals(task_pool, current_tick);
       if(newTask != NULL){
@@ -20,7 +20,7 @@ void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
           current = calloc(1, sizeof(CircleElement));
           current -> task = newTask;
         }else{
-          CircleElement *temp =  calloc(1, sizeof(CircleElement));
+          temp =  calloc(1, sizeof(CircleElement));
           temp -> task = newTask;
           if(current -> next == NULL){
             current -> prev = temp;
@@ -32,9 +32,12 @@ void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
             temp -> prev = current -> prev;
             current -> prev -> next = temp;
             current -> prev = temp;
+
           }
+
         }
       }
+
 
       if (CPU == NULL){
         runtime = 0;
@@ -70,6 +73,5 @@ void schedule_RR(const TaskPool *task_pool, uint16_t quantum_max) {
 
   }
   printf("\n");
-
   return;
 }

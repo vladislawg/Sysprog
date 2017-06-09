@@ -23,3 +23,4 @@ int pqueue_offer(PrioQueue *queue, q_elem* newElem);
 void pqueue_print(PrioQueue *queue);
 Task* pqueue_peek(PrioQueue *queue);
 Task* pqueue_poll(PrioQueue *queue);
+void pqueue_free(PrioQueue *queue);

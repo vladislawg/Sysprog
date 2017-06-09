@@ -65,9 +65,14 @@ void schedule_MLF(const TaskPool *task_pool, uint16_t num_levels) {
       break;
     }
 
-
     current_tick ++;
     runtime --;
   }
+
+  for(int i = 0; i < num_levels; i++){
+    queue_free(queues[i]);
+  }
+  free(queues);
+
   printf("\n");
 }

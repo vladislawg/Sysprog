@@ -26,5 +26,6 @@ void schedule_SJN(const TaskPool *task_pool) {
     }
     current_tick ++;
   }
+  pqueue_free(queue);
   return;
 }

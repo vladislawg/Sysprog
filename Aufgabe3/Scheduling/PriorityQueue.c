@@ -87,6 +87,20 @@ Task* pqueue_poll(PrioQueue *queue){
   return t;
 }
 
+void pqueue_free(PrioQueue *queue){
+  if(queue == NULL){
+    printf("keine Queue\n");
+  }
+
+  q_elem *temp = NULL;
+  while(queue -> root != NULL){
+    temp = queue -> root;
+    queue -> root = queue -> root -> next;
+    free(temp);
+  }
+  free(queue);
+}
+
 
 
 void pqueue_print(PrioQueue *queue){
