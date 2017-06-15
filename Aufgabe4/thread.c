@@ -27,6 +27,7 @@ void* thread(void* t_args){
 			while(!field -> printed){
 				pthread_cond_wait(&field -> field_printed_cond, &field-> field_printed_mutex);
 			}
+
 		pthread_mutex_unlock(&field -> field_printed_mutex);
 
 		// update field
@@ -34,7 +35,18 @@ void* thread(void* t_args){
 		calculate_fish_generation(args);
 
 		//TODO: make sure all threads finished updating their areas before proceeding
+
+
+	//	pthread_cond_wait(field -> lower_row_cond, field -> lower_row_mutex);
+	//	pthread_cond_wait(field -> upper_row_cond, field -> upper_row_mutex);
+
+
 		//TODO: increase generation number of field struct
+		pthread_mutex_lock(&field -> generation_mutex);
+		field -> generation ++;
+		printf("%d\n", field -> generation);
+		pthread_mutex_unlock(&field -> generation_mutex);
+
 
 		// signalize printer to print new generation
 		pthread_mutex_lock(&field -> field_printed_mutex);

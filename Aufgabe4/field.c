@@ -90,7 +90,7 @@ field* make_field(int num_threads){
 	g_field -> height = height;
 	g_field -> width = width;
 	g_field -> num_threads = NUM_THREADS;
-	g_field -> generation = SHARK_ENERGY;
+	g_field -> generation = 0;
 
 	//TODO: initialize mutex and other variables for synchronization of threads
 	pthread_mutex_init(&g_field -> generation_mutex, NULL);
