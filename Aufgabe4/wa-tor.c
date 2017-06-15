@@ -17,12 +17,15 @@ int main(){
 
 	// create game field
 	field* field = make_field(NUM_THREADS);
+	printf("%d\n",field -> height);
 
 	// check if number of threads is accurate
 	if(NUM_THREADS < 1){
 		perror("There must be at least one thread!");
 		exit(1);
 	} else if(NUM_THREADS > field -> height){
+		printf("%d\n",NUM_THREADS);
+
 		perror("Too many threads!");
 		exit(1);
 	}

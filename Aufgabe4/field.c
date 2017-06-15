@@ -69,7 +69,7 @@ animal** population_from_file(int* height, int* width){
 			mtx[i][j].energy = 0;
 			mtx[i][j].last_modified = -1;
 			if(mtx[i][j].type == SHARK){
-				mtx[i][j].energy = SHARK_ENERGY;				
+				mtx[i][j].energy = SHARK_ENERGY;
 			}
 		}
 		fgetc(fp);
@@ -81,7 +81,20 @@ field* make_field(int num_threads){
 	field* g_field;
 
 	//TODO: initialize field and it's members listed in field.h
+	g_field = (field*) malloc(sizeof(field));
+	int height = 0;
+	int width = 0;
+
+	g_field -> mtx = population_from_file(&height, &width);
+
+	g_field -> height = height;
+	g_field -> width = width;
+	g_field -> num_threads = NUM_THREADS;
+	g_field -> generation = SHARK_ENERGY;
+
 	//TODO: initialize mutex and other variables for synchronization of threads
+	pthread_mutex_init(&g_field -> generation_mutex, NULL);
+	pthread_cond_init(&g_field -> generation_cond, NULL);
 
 	// initialize mutex and signal/wait object arrays
 	g_field -> upper_row_mutex = (pthread_mutex_t*) emalloc(num_threads * sizeof(pthread_mutex_t));

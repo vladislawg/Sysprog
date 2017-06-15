@@ -30,7 +30,7 @@ void* thread(void* t_args){
 		pthread_mutex_unlock(&field -> field_printed_mutex);
 
 		// update field
-		calculate_shark_generation(args); 
+		calculate_shark_generation(args);
 		calculate_fish_generation(args);
 
 		//TODO: make sure all threads finished updating their areas before proceeding

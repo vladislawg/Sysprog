@@ -5,15 +5,15 @@ SRC = \
 	rules.c \
 	field.c \
 	utils.c \
-	wa-tor.c	
+	wa-tor.c
 
 ARCH = $(shell getconf LONG_BIT)
 
-SDL_CFLAGS_64 = $(shell libsdl_64/bin/sdl-config --cflags)
-SDL_LFLAGS_64 = $(shell libsdl_64/bin/sdl-config --static-libs)
+SDL_CFLAGS_64 = $(shell sdl-config --cflags)
+SDL_LFLAGS_64 = $(shell sdl-config --static-libs)
 
-SDL_CFLAGS_32 = $(shell libsdl_32/bin/sdl-config --cflags)
-SDL_LFLAGS_32 = $(shell libsdl_32/bin/sdl-config --static-libs)
+#SDL_CFLAGS_32 = $(shell libsdl_32/bin/sdl-config --cflags)
+#SDL_LFLAGS_32 = $(shell libsdl_32/bin/sdl-config --static-libs)
 
 CC	 = gcc
 CFLAGS   = -g -Wall -Wextra -O3 -std=c99 $(SDL_CFLAGS_$(ARCH))
@@ -48,4 +48,4 @@ run: $(BIN)
 clean:
 	$(RM) $(BIN) $(OBJS) *.d
 
-.PHONY: clean debug run 
+.PHONY: clean debug run
