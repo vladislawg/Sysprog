@@ -19,9 +19,6 @@ typedef struct field{
 	pthread_mutex_t* generation_mutex;
 	pthread_cond_t* generation_cond;
 
-	pthread_mutex_t* update_field_mutex;
-	pthread_cond_t* update_field_cond;
-
 	pthread_mutex_t field_printed_mutex;
 	pthread_cond_t field_printed_cond;
 	bool printed;
@@ -41,7 +38,6 @@ typedef struct field{
 	int width;
 	int height;
 	int generation;
-	bool update;
 
 
 }field;
