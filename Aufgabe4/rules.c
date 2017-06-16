@@ -14,6 +14,10 @@ void lock(thread_args* args, int h){
 	pthread_cond_t* cond;
 	bool* row_beeing_read;
 	//TODO: call to_lock() (utils.h) from to find out if a row needs to be locked at the height h
+
+
+
+
 	//TODO: check if other thread already locked the row and wait if necessary
 	//TODO: lock the row
 
@@ -126,26 +130,26 @@ void calculate_shark_generation(thread_args* args){
 						get_walk_dir(i,j, &n_h, &n_w);
 
 						//check if row is locked by neighbor thread, if not, lock
-						lock(args, n_h);	//SOLUTION				
+						lock(args, n_h);	//SOLUTION
 
 						// check if direction is valid
 						if(n_w >= 0 && n_h >= 0 && n_h < height && n_w < width && mtx[n_h][n_w].type == WATER){
 
 							mtx[i][j].last_modified = gen;
 							memcpy(&mtx[n_h][n_w], &mtx[i][j], sizeof(animal));
-							reproduct(&mtx[i][j], gen, SHARK);	
+							reproduct(&mtx[i][j], gen, SHARK);
 
 							//unlock and send signal to neighbor thread
-							unlock(args, n_h);			
+							unlock(args, n_h);
 							break;
 						}
 						//unlock and send signal to neighbor thread
-						unlock(args, n_h);	
+						unlock(args, n_h);
 					}
 				}
 			}
 		}
-	}	
+	}
 }
 
 void calculate_fish_generation(thread_args* t_args){

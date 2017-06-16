@@ -33,20 +33,18 @@ void* thread(void* t_args){
 		// update field
 		calculate_shark_generation(args);
 		calculate_fish_generation(args);
+		field -> update = true
 
 		//TODO: make sure all threads finished updating their areas before proceeding
-
-
-	//	pthread_cond_wait(field -> lower_row_cond, field -> lower_row_mutex);
-	//	pthread_cond_wait(field -> upper_row_cond, field -> upper_row_mutex);
-
+		//look mutex
+		//wait
+		//unlock mutex
 
 		//TODO: increase generation number of field struct
 		pthread_mutex_lock(&field -> generation_mutex);
 		field -> generation ++;
 		printf("%d\n", field -> generation);
 		pthread_mutex_unlock(&field -> generation_mutex);
-
 
 		// signalize printer to print new generation
 		pthread_mutex_lock(&field -> field_printed_mutex);
