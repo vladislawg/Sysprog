@@ -16,8 +16,14 @@ typedef struct animal{
 typedef struct field{
 
 	//TODO: declare mutex and other variables for synchronization of threads
-	pthread_mutex_t* generation_mutex;
-	pthread_cond_t* generation_cond;
+	pthread_mutex_t generation_mutex;
+	pthread_cond_t generation_cond;
+
+
+	pthread_mutex_t num_calc_ready_mutex;
+	pthread_cond_t num_calc_ready_cond;
+	int num_calc_ready;
+
 
 	pthread_mutex_t field_printed_mutex;
 	pthread_cond_t field_printed_cond;

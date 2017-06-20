@@ -91,11 +91,17 @@ field* make_field(int num_threads){
 	g_field -> width = width;
 	g_field -> num_threads = NUM_THREADS;
 	g_field -> generation = 0;
-
+	g_field -> num_calc_ready = 0;
+	g_field -> printed = true;
 
 	//TODO: initialize mutex and other variables for synchronization of threads
 	pthread_mutex_init(&g_field -> generation_mutex, NULL);
 	pthread_cond_init(&g_field -> generation_cond, NULL);
+	pthread_mutex_init(&g_field -> num_calc_ready_mutex, NULL);
+	pthread_cond_init(&g_field -> num_calc_ready_cond, NULL);
+
+	pthread_mutex_init(&g_field -> field_printed_mutex, NULL);
+	pthread_cond_init(&g_field -> field_printed_cond, NULL);
 
 
 	// initialize mutex and signal/wait object arrays

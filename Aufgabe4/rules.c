@@ -14,12 +14,22 @@ void lock(thread_args* args, int h){
 	pthread_cond_t* cond;
 	bool* row_beeing_read;
 	//TODO: call to_lock() (utils.h) from to find out if a row needs to be locked at the height h
-
-
+	to_lock(args,h, &mutex, &cond, &row_beeing_read);
+	printf("%p\n", mutex);
+	printf("%p\n", cond);
 
 
 	//TODO: check if other thread already locked the row and wait if necessary
+	pthread_mutex_lock(mutex);
+	pthread_cond_signal(cond);
+	if(mutex != NULL){
+		pthread_cond_wait(cond, mutex);
+	}
+	pthread_mutex_unlock(mutex);
+
 	//TODO: lock the row
+	pthread_mutex_lock(mutex);
+
 
 }
 
