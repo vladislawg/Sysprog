@@ -9,39 +9,56 @@
 #include "utils.h"
 
 void lock(thread_args* args, int h){
-
+	printf("lock\n");
 	pthread_mutex_t* mutex;
 	pthread_cond_t* cond;
-	bool* row_beeing_read;
+	bool* row_beeing_read;	//wenn ture -> Reihe ist gesperrt, wenn False -> Reihe ist nicht gesperrt
+
 	//TODO: call to_lock() (utils.h) from to find out if a row needs to be locked at the height h
 	to_lock(args,h, &mutex, &cond, &row_beeing_read);
-	printf("%p\n", mutex);
-	printf("%p\n", cond);
-
+	printf("mutex: %p\n", mutex);
+	printf("cond: %p\n", cond);
+	printf("row beeing read: %p\n", row_beeing_read);
+	printf("%s\n", row_beeing_read);
 
 	//TODO: check if other thread already locked the row and wait if necessary
-	pthread_mutex_lock(mutex);
-	pthread_cond_signal(cond);
-	if(mutex != NULL){
-		pthread_cond_wait(cond, mutex);
+	//Reihe nicht sperren wenn Objekte mit NULL initialisiert
+
+//	wenn Reihe gesperrt ist sollen die threads warten
+//	spurious wakeup beachten
+	if(mutex != NULL && cond != NULL && row_beeing_read){
+			while(row_beeing_read){
+				printf("in while\n");
+				pthread_cond_wait(cond, mutex);
+		}
 	}
-	pthread_mutex_unlock(mutex);
 
 	//TODO: lock the row
-	pthread_mutex_lock(mutex);
-
+	//prüfe ob die reihe gesperrt werden muss oder
+	//mutex == NULL und cond == NULL reihe muss nicht gesperrt werden
+	//mutex != NULL und cond != NULL reihe muss gesperrt werden
+	if(mutex != NULL && cond != NULL && !row_beeing_read){
+		pthread_mutex_lock(mutex);
+	}
 
 }
 
 void unlock(thread_args* args, int h){
-
+	printf("unlock\n");
 	pthread_mutex_t* mutex;
 	pthread_cond_t* cond;
 	bool* row_beeing_read;
 
 	//TODO: call to_lock() to find out if a row needs to be unlocked at the height h
-	//TODO: send signal and unlock the row
+	to_lock(args,h, &mutex, &cond, &row_beeing_read);
 
+ 	//TODO: send signal and unlock the row
+	if(mutex != NULL && cond != NULL && row_beeing_read){
+		printf("send signal an unlock\n");
+		row_beeing_read = false;
+		pthread_cond_signal(cond);
+		pthread_mutex_unlock(mutex);
+	}
 }
 
 
