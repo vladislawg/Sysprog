@@ -17,7 +17,7 @@ int main(){
 
 	// create game field
 	field* field = make_field(NUM_THREADS);
-	printf("%d\n",field -> height);
+	printf("num threads %d\n", NUM_THREADS);
 
 	// check if number of threads is accurate
 	if(NUM_THREADS < 1){

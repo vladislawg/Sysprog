@@ -40,23 +40,26 @@ void* thread(void* t_args){
 
 		//TODO: make sure all threads finished updating their areas before proceeding
 		pthread_mutex_lock(&field -> num_calc_ready_mutex);
-		field -> num_calc_ready ++;
-		field -> num_calc_ready %= field -> num_threads;
-		if (field -> num_calc_ready == 0) {
+		field -> num_calc_ready ++;																					//Counter für Threads die fertig sind mit der Berechnung
+	//	field -> num_calc_ready %= field -> num_threads;
+		if (field -> num_calc_ready == field -> num_threads) {							//Nur der Letzte thread ist zuständig für die Erhöhung der generation und das fertigstellen des Printen
+				printf("Thread with id: %d", args -> id);
 			// last thread goes here
 			field -> printed = false;
 			//TODO: increase generation number of field struct
 			field -> generation ++;
+			field -> num_calc_ready = 0;
 			pthread_cond_signal(&field -> num_calc_ready_cond);
 			pthread_cond_signal(&field -> field_printed_cond);
 		}
 		printf("num %d\n", field -> num_calc_ready);
-		while(field -> num_calc_ready % field -> num_threads != 0){
+		while(field -> num_calc_ready % field -> num_threads != 0){				//Alle threads warten bis die Berechnung fertiggestellt ist
 			printf("While\n");
+			printf("%d\n", field -> num_calc_ready);
 			pthread_cond_wait(&field -> num_calc_ready_cond, &field -> num_calc_ready_mutex);
 		}
-		pthread_mutex_unlock(&field -> num_calc_ready_mutex);
-		pthread_cond_signal(&field -> num_calc_ready_cond);
+		pthread_cond_signal(&field -> num_calc_ready_cond);								//Signal für das fertigstellen der Berechnung
+		pthread_mutex_unlock(&field -> num_calc_ready_mutex);							
 
 		printf("ready %d\n", args -> id);
 

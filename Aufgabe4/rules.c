@@ -9,27 +9,23 @@
 #include "utils.h"
 
 void lock(thread_args* args, int h){
-	printf("lock\n");
+//	printf("lock\n");
 	pthread_mutex_t* mutex;
 	pthread_cond_t* cond;
 	bool* row_beeing_read;	//wenn ture -> Reihe ist gesperrt, wenn False -> Reihe ist nicht gesperrt
 
 	//TODO: call to_lock() (utils.h) from to find out if a row needs to be locked at the height h
 	to_lock(args,h, &mutex, &cond, &row_beeing_read);
-	printf("mutex: %p\n", mutex);
-	printf("cond: %p\n", cond);
-	printf("row beeing read: %p\n", row_beeing_read);
-	printf("%s\n", row_beeing_read);
 
 	//TODO: check if other thread already locked the row and wait if necessary
 	//Reihe nicht sperren wenn Objekte mit NULL initialisiert
 
 //	wenn Reihe gesperrt ist sollen die threads warten
-//	spurious wakeup beachten
+
 	if(mutex != NULL && cond != NULL && row_beeing_read != NULL){
 			pthread_mutex_lock(mutex);
+			//	spurious wakeup beachten
 			while(*row_beeing_read){
-				printf("in while\n");
 				pthread_cond_wait(cond, mutex);
 		}
 		*row_beeing_read = true;
@@ -47,7 +43,7 @@ void lock(thread_args* args, int h){
 }
 
 void unlock(thread_args* args, int h){
-	printf("unlock\n");
+	//printf("unlock\n");
 	pthread_mutex_t* mutex;
 	pthread_cond_t* cond;
 	bool* row_beeing_read;
@@ -57,7 +53,7 @@ void unlock(thread_args* args, int h){
 
  	//TODO: send signal and unlock the row
 	if(mutex != NULL && cond != NULL){
-		printf("send signal an unlock\n");
+
 		pthread_mutex_lock(mutex);
 		*row_beeing_read = false;
 		pthread_cond_signal(cond);

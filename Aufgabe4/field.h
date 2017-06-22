@@ -24,7 +24,7 @@ typedef struct field{
 	pthread_cond_t num_calc_ready_cond;
 	int num_calc_ready;
 
-
+/////////////////////////////////////////////////////////////////////////////////
 	pthread_mutex_t field_printed_mutex;
 	pthread_cond_t field_printed_cond;
 	bool printed;
