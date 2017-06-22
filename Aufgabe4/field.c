@@ -91,7 +91,7 @@ field* make_field(int num_threads){
 	g_field -> width = width;
 	g_field -> num_threads = NUM_THREADS;
 	g_field -> generation = 0;
-	g_field -> num_calc_ready = 0;
+	g_field -> num_calc_ready = 1;
 	g_field -> printed = true;
 
 	//TODO: initialize mutex and other variables for synchronization of threads

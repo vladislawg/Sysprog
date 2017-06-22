@@ -26,20 +26,23 @@ void lock(thread_args* args, int h){
 
 //	wenn Reihe gesperrt ist sollen die threads warten
 //	spurious wakeup beachten
-	if(mutex != NULL && cond != NULL && row_beeing_read){
-			while(row_beeing_read){
+	if(mutex != NULL && cond != NULL && row_beeing_read != NULL){
+			pthread_mutex_lock(mutex);
+			while(*row_beeing_read){
 				printf("in while\n");
 				pthread_cond_wait(cond, mutex);
 		}
+		*row_beeing_read = true;
+		pthread_mutex_unlock(mutex);
 	}
 
 	//TODO: lock the row
 	//prüfe ob die reihe gesperrt werden muss oder
 	//mutex == NULL und cond == NULL reihe muss nicht gesperrt werden
 	//mutex != NULL und cond != NULL reihe muss gesperrt werden
-	if(mutex != NULL && cond != NULL && !row_beeing_read){
-		pthread_mutex_lock(mutex);
-	}
+	//if(mutex != NULL && cond != NULL && row_beeing_read != NULL){
+	//	pthread_mutex_lock(mutex);
+	//}
 
 }
 
@@ -53,14 +56,14 @@ void unlock(thread_args* args, int h){
 	to_lock(args,h, &mutex, &cond, &row_beeing_read);
 
  	//TODO: send signal and unlock the row
-	if(mutex != NULL && cond != NULL && row_beeing_read){
+	if(mutex != NULL && cond != NULL){
 		printf("send signal an unlock\n");
-		row_beeing_read = false;
+		pthread_mutex_lock(mutex);
+		*row_beeing_read = false;
 		pthread_cond_signal(cond);
 		pthread_mutex_unlock(mutex);
 	}
 }
-
 
 int* hunt_fish(thread_args* args, int h, int w, int height, int width){
 	animal** mtx = args -> field -> mtx;

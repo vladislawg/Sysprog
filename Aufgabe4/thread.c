@@ -52,6 +52,7 @@ void* thread(void* t_args){
 		}
 		printf("num %d\n", field -> num_calc_ready);
 		while(field -> num_calc_ready % field -> num_threads != 0){
+			printf("While\n");
 			pthread_cond_wait(&field -> num_calc_ready_cond, &field -> num_calc_ready_mutex);
 		}
 		pthread_mutex_unlock(&field -> num_calc_ready_mutex);
