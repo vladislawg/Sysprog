@@ -47,3 +47,11 @@ void print_matrix_in_file(FILE* fp, Mtx *matrix){
     fprintf(fp, "\n");
   }
 }
+
+void free_mtx(Mtx* Matrix){
+  for(int x = 0; x < Matrix -> rows; x++){
+      free(Matrix -> data[x]);
+  }
+  free(Matrix -> data);
+  free(Matrix);
+}
