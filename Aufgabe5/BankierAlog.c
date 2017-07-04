@@ -1,5 +1,13 @@
 #include "main.h"
 
+void printMtx(Mtx *Matrix){
+  for(int i = 0; i < Matrix -> rows; i++){
+    for(int j = 0; j < Matrix -> cols; j++){
+      printf("%d ", Matrix -> data[i][j]);
+    }
+    printf("\n");
+  }
+}
 
 int *frei(Mtx* Matrix, int verfuegbar[]){
   int *array = calloc(Matrix -> rows, sizeof(int)) ;
@@ -62,27 +70,31 @@ int find_prozess(Mtx* Anforderungsmatrix, int *Restvektor){
   return index;
 }
 
-void Update_Matrix(Mtx* Matrix, int *array, char operation){
-
+void Update_Matrix(Mtx* Matrix, int *array, char operation, int index){
+  //kann sein, dass hier ein fehler mit den indizes ist
   if(operation == 43){
     printf("plus\n");
-
+    for(int i = 0; i < Matrix -> rows; i++){
+      Matrix -> data[index][i] = Matrix -> data[index][i] + array[i];
+    }
   }else if(operation == 45){
     printf("minus\n");
+    for(int i = 0; i < Matrix -> rows; i++){
+      Matrix -> data[index][i] = Matrix -> data[index][i] - array[i];
+    }
   }
-
 }
 
-//weiß noch nicht ob man das braucht 
+//weiß noch nicht ob man das braucht
 void update_array(int *array1, int *array2, char operation, int array_len){
   if(operation == 43){
     printf("plus\n");
-    for(int i = 0; i < array_len, i++){
+    for(int i = 0; i < array_len; i++){
       array1[i] = array1[i] + array2[i];
     }
   }else if(operation == 45){
     printf("minus\n");
-    for(int i = 0; i < array_len, i++){
+    for(int i = 0; i < array_len; i++){
       array1[i] = array1[i] - array2[i];
     }
   }
@@ -106,18 +118,20 @@ void bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[],
      i = find_prozess(Gesamtanforderung, Betriebsmittelrestvektor);
      if (i < 0){
        printf("Kein prozess gefunden\n");
-      // break;
+    //   break;
      } else {
+       printf("Prozesse no: %d\n", i);
        //zuweisen der Betirebsmittel für den Prozess --> Update Gesamtanforderung
        //Update Betriebsmittelrestvektor
        //Update Belegungsmatrix
-       Update_Matrix(Gesamtanforderung, Betriebsmittelrestvektor, '+');
+       printMtx(Gesamtanforderung);
+       Update_Matrix(Gesamtanforderung, Betriebsmittelrestvektor, '-', i);
+       printMtx(Gesamtanforderung);
 
 
      }
      printf("Prozess: %d\n", i);
-
-  // }
+   //}
 
 
 }
