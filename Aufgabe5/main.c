@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include "main.h"
 
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]){
   Mtx *Gesamtanforderung = NULL;
   Mtx *Belegungsmatrix = NULL;
   int *verfuegbar = NULL;
+  Mtx *Matrix = NULL;
 
   if(input_file == NULL){
     printf("Could not open input file!\n");
@@ -51,10 +53,15 @@ int main(int argc, char *argv[]){
       fscanf(input_file, "%2d", &verfuegbar[j]);
     }
 
+    if(Gesamtanforderung == NULL || Belegungsmatrix == NULL || Prozesse == 0 || Betriebsmittel == 0 || verfuegbar == NULL)
+      exit(1);
+
+    if(!check_matrix(Gesamtanforderung)) exit(1);
+    if(!check_matrix(Belegungsmatrix)) exit(1);
 
     //um zu wissen wie viel Speicher man für die Matrix Reservieren muss
     int linecounter = 0;
-     char c ;
+    char c;
     while((c = fgetc(input_file)) != EOF){
       if(c == 'A' || c == 'R') linecounter ++;
     }
@@ -64,7 +71,7 @@ int main(int argc, char *argv[]){
     int Prozessnumber = 0;
     int Betriebs = 0;
     int Anzahl = 0;
-    Mtx *Matrix = make_matrix(4, linecounter); //4 steht für die 4 Spalten in der Matrix
+    Matrix = make_matrix(4, linecounter); //4 steht für die 4 Spalten in der Matrix
     int i = 0;
 
     while((c = fgetc(input_file)) != EOF){
@@ -80,9 +87,12 @@ int main(int argc, char *argv[]){
         printf("%d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
         add_Elements_to_Matrix(Matrix, operation, Prozessnumber, Betriebs, Anzahl, i);
         i++;
+      }else{
+        continue;
       }
     }
     fclose(input_file);
+    printMtx(Matrix);
   }
 
 //Write output file
@@ -103,29 +113,39 @@ int main(int argc, char *argv[]){
   fprintf(output_file, "Belegungen:\n");
   print_matrix_in_file(output_file, Belegungsmatrix);
   fprintf(output_file, "\n");
-  fprintf(output_file, "verfügbar:\n");
+  fprintf(output_file, "verfügbar: ");
   for(int i = 0; i < Betriebsmittel; i++){
-    fprintf(output_file, "%d ", verfuegbar[i]);
+    fprintf(output_file, " %d ", verfuegbar[i]);
   }
-  Mtx* Restananforderungsmatrix = calc_Restanforderung(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse);
+
+  Mtx *Restananforderungsmatrix = calc_Restanforderung(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse);
+  int *frei = calc_free_array(Belegungsmatrix, verfuegbar);
   fprintf(output_file, "\n");
   fprintf(output_file, "\n");
-  fprintf(output_file, "Restananforderungsmatrix:\n");
+  fprintf(output_file, "Restanforderungen:\n");
   print_matrix_in_file(output_file, Restananforderungsmatrix);
-
-
   fprintf(output_file, "\n");
-  fclose(output_file);
+  fprintf(output_file, "frei: ");
+  for(int i = 0; i < Betriebsmittel; i++){
+    fprintf(output_file, " %d ", frei[i]);
+  }
+  fprintf(output_file, "\n");
+
 
   Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, verfuegbar, Betriebsmittel, Prozesse);
-
-  if(state == UNSAFE)
+  if(state == UNSAFE){
     printf("undsafe\n");
+    fprintf(output_file, "\nUNSICHER\n");
+  }
 
-  if(state == SAFE)
+  if(state == SAFE){
     printf("safe\n");
+    fprintf(output_file, "\nSICHER\n");
+  }
 
+  Status awnser = deadlock_avoidance(Matrix, Restananforderungsmatrix, frei);
 
+  fclose(output_file);
   free_mtx(Gesamtanforderung);
   free_mtx(Belegungsmatrix);
   free_mtx(Restananforderungsmatrix);

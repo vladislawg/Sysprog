@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "main.h"
 
 Mtx* make_matrix(int n_rows, int n_cols) {
@@ -15,13 +17,29 @@ Mtx* make_matrix(int n_rows, int n_cols) {
 void print_matrix_in_file(FILE* fp, Mtx *matrix){
   for(int j = 0; j < matrix -> cols; j++){
     for(int i = 0; i < matrix -> rows; i++){
-      fprintf(fp, "%d", matrix -> data[i][j]);
+      fprintf(fp, " %d", matrix -> data[i][j]);
       if(i < matrix -> cols && j < matrix -> rows-1 ){
         fprintf(fp, " ");
       }
     }
     fprintf(fp, "\n");
   }
+}
+
+bool check_matrix(Mtx* Matrix){
+  int counter = 0;
+
+  for(int j = 0; j < Matrix -> cols; j++){
+    for(int i = 0; i < Matrix -> rows; i++){
+      if(Matrix -> data[j][i] == 0){
+        counter ++;
+      }
+    }
+  }
+
+  if(counter == (Matrix -> rows * Matrix -> cols)) return false;
+
+  return true;
 }
 
 void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int Betriebsmittel, int Anzahl, int index){

@@ -21,3 +21,6 @@ Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[
 void printMtx(Mtx *Matrix);
 void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int Betirebsmittel, int Anzahl, int index);
 Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows, int cols);
+int *calc_free_array(Mtx* Matrix, int verfuegbar[]);
+Status deadlock_avoidance(Mtx* Operation_Matrix, Mtx* Restananforderungsmatrix, int *Betriebsmittelrestvektor);
+bool check_matrix(Mtx* Matrix);

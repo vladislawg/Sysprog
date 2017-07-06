@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "main.h"
 
 void printMtx(Mtx *Matrix){
@@ -33,6 +35,34 @@ Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows
   return Restananforderungsmatrix;
 }
 
+
+Status deadlock_avoidance(Mtx* Operation_Matrix, Mtx* Restananforderungsmatrix, int *Betriebsmittelrestvektor){
+  Status answer = UNDEFINED;
+
+  //Operation herausfinden
+  int operation;
+    for(int j = 0; j < Operation_Matrix -> cols; j++){
+      operation = Operation_Matrix -> data[0][j];
+      printf("Operation %d\n", operation);
+      // while(awnser = UNDEFINED){
+      //
+      // }
+
+
+
+
+
+
+
+
+
+
+    }
+
+  return answer;
+
+}
+
 Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols){
 
   //Berechne Freie Betriebsmittel
@@ -43,26 +73,16 @@ Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[
   int counter = 0;
   int Prozess = 0;
   int del = 0;
-  Status state = UNDEFINED; //0 undefindes, -1 unsafe, 1 safe
+  Status state = UNDEFINED;
 
-  printMtx(Restananforderungsmatrix);
-  for(int i = 0; i < rows; i++)
-    printf("%d", Betriebsmittelrestvektor[i]);
-printf("\n");
-
- while(state == UNDEFINED){
+  while(state == UNDEFINED){
     for(int i = 0; i < cols; i++){
       counter = 0;
       for(int j = 0; j < rows; j++){
-        printf("i:%d\n",i);
-        printf("j:%d\n",j);
-        printf("%d >= %d\n",Betriebsmittelrestvektor[j], Restananforderungsmatrix -> data[j][i]);
         if(Betriebsmittelrestvektor[j] >= Restananforderungsmatrix -> data[j][i]){
           counter ++;
-          printf("c %d\n",counter );
           if(counter == rows){
             Prozess = i;
-            printf("%d\n", Prozess);
             del = 1;
             break;
            }
@@ -74,15 +94,10 @@ printf("\n");
       if(del == 1){
         break;
       }
-      printf("''''''''''''i: %d\n", i);
-      printf("//////////////%d\n", cols -1);
       if(i == cols-1){
-        printf("undsafe\n");
         state = UNSAFE;
       }
     }
-    printf("%d\n", Prozess);
-
     if(del == 1){
       for(int j = 0; j < rows; j++){
         Betriebsmittelrestvektor[j] = Betriebsmittelrestvektor[j] + Belegungsmatrix -> data[j][Prozess];
@@ -90,9 +105,8 @@ printf("\n");
       cols --;
     }
     if(cols == 0){
-      //safe
       state = SAFE;
    }
- }
+  }
     return state;
 }
