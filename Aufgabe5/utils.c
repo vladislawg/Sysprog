@@ -25,6 +25,7 @@ void print_matrix_in_file(FILE* fp, Mtx *matrix){
 }
 
 void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int Betriebsmittel, int Anzahl, int index){
+  printf("\nAdd Elements to Matrix\n");
   Matrix -> data[0][index] = operation;
   Matrix -> data[1][index] = Prozessnummer;
   Matrix -> data[2][index] = Betriebsmittel;

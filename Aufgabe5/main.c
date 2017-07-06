@@ -57,50 +57,34 @@ int main(int argc, char *argv[]){
     //um zu wissen wie viel Speicher man für die Matrix Reservieren muss
     int linecounter = 0;
      char c ;
-    // while((c = fgetc(input_file)) != EOF){
-    //   printf("%c\n", c);
-    //   if(c == 'A' || c == 'R') linecounter ++;
-    // }
+    while((c = fgetc(input_file)) != EOF){
+      if(c == 'A' || c == 'R') linecounter ++;
+    }
+    fseek(input_file, 0, SEEK_SET); // zurucksetzen des Cursor
 
-    int operation;
+    int operation = 0;
     int Prozessnumber = 0;
     int Betriebs = 0;
     int Anzahl = 0;
-    Mtx *Matrix = make_matrix(4, 3); //4 steht für die 4 Spalten in der Matrix
-    int i;
+    Mtx *Matrix = make_matrix(4, linecounter); //4 steht für die 4 Spalten in der Matrix
+    int i = 0;
 
     while((c = fgetc(input_file)) != EOF){
-      printf("%c\n", c);
       if(c == 'A'){
-        printf("A\n");
         operation = 1;    //1 für alocate (A)
         fscanf(input_file, "%2d %2d %2d", &Prozessnumber, &Betriebs, &Anzahl);
-        printf("op %d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
+        printf("%d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
         add_Elements_to_Matrix(Matrix, operation, Prozessnumber, Betriebs, Anzahl, i);
-        printf("i: %d\n",i);
-        printMtx(Matrix);
         i++;
       }else if(c == 'R'){
-        printf("B\n");
         operation = 0;    //0 für Release (R)
-        fscanf(input_file, "%2d %2d %2d", &operation, &Betriebs, &Anzahl);
-        printf("op %d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
+        fscanf(input_file, "%2d %2d %2d", &Prozessnumber, &Betriebs, &Anzahl);
+        printf("%d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
         add_Elements_to_Matrix(Matrix, operation, Prozessnumber, Betriebs, Anzahl, i);
-        printf("i: %d\n",i);
-        printMtx(Matrix);
         i++;
-      } else{
-        printf("operation unbekannt\n");
       }
-
     }
-    printf("linecounter;: %d\n", linecounter);
-    //
-
-    // char string[] = " ";
-    // for(int i = 0; i < linecounter; i++){
-    // }
-
+    printMtx(Matrix);
     fclose(input_file);
   }
 
