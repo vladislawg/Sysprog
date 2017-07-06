@@ -4,8 +4,6 @@
 
 #include "main.h"
 
-#define MAX_LEN_LINE 100
-
 int main(int argc, char *argv[]){
   //rows = Betirebsmittel
   //cols = Prozesse
@@ -34,7 +32,7 @@ int main(int argc, char *argv[]){
     fscanf(input_file, "%2d\n%2d", &Prozesse, &Betriebsmittel);
     Gesamtanforderung = make_matrix(Betriebsmittel, Prozesse);
     Belegungsmatrix = make_matrix(Betriebsmittel, Prozesse);
-    verfuegbar = calloc(Betriebsmittel, sizeof(int*));
+    verfuegbar = calloc(Betriebsmittel, sizeof(int));
 
     for(int j = 0; j < Prozesse; j++){
       for(int i = 0; i < Betriebsmittel; i++){
@@ -84,7 +82,6 @@ int main(int argc, char *argv[]){
         i++;
       }
     }
-    printMtx(Matrix);
     fclose(input_file);
   }
 
@@ -110,15 +107,28 @@ int main(int argc, char *argv[]){
   for(int i = 0; i < Betriebsmittel; i++){
     fprintf(output_file, "%d ", verfuegbar[i]);
   }
+  Mtx* Restananforderungsmatrix = calc_Restanforderung(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse);
+  fprintf(output_file, "\n");
+  fprintf(output_file, "\n");
+  fprintf(output_file, "Restananforderungsmatrix:\n");
+  print_matrix_in_file(output_file, Restananforderungsmatrix);
+
+
   fprintf(output_file, "\n");
   fclose(output_file);
 
-  //bankieralgo(Gesamtanforderung, Belegungsmatrix, verfuegbar, Betriebsmittel, Prozesse);
+  Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, verfuegbar, Betriebsmittel, Prozesse);
 
+  if(state == UNSAFE)
+    printf("undsafe\n");
+
+  if(state == SAFE)
+    printf("safe\n");
 
 
   free_mtx(Gesamtanforderung);
   free_mtx(Belegungsmatrix);
+  free_mtx(Restananforderungsmatrix);
   free(verfuegbar);
 
   return 0;

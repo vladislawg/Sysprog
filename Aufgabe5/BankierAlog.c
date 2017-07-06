@@ -11,7 +11,7 @@ void printMtx(Mtx *Matrix){
 }
 
 int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
-  int *array = calloc(Matrix -> rows, sizeof(int)) ;
+  int *array = calloc(Matrix -> rows, sizeof(int*));
   for(int j = 0; j < Matrix -> rows; j++){
     array[j] = verfuegbar[j];
   }
@@ -23,118 +23,76 @@ int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
  return array;
 }
 
-int find_prozess(Mtx* Restananforderungsmatrix, int *Betriebsmittelrestvektor, int rows, int cols){
-  int counter = 0;
-
-  printMtx(Restananforderungsmatrix);
-  for(int i = 0; i < rows; i++){
-    printf("%d", Betriebsmittelrestvektor[i]);
-  }
-
-  for(int i = 0; i < cols; i++){
-    counter = 0;
-    for(int j = 0; j < rows; j++){
-      printf("i: %d\n",i);
-      printf("j: %d\n",j);
-      printf("counter%d\n",counter);
-      printf("rows%d\n",rows);
-      if(Betriebsmittelrestvektor[j] >= Restananforderungsmatrix -> data[j][i]){
-        counter ++;
-      }else{
-        break;
-      }
-    }
-    if(counter == rows){
-      //printf("counter%d\n",counter);
-      printf("return\n");
-      return i;
-    }
-  }
-   return -1;
-}
-
-void bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols){
-
-  //Berechne Freie Betriebsmittel
-  Mtx *Gesamtanforderung_cp = Gesamtanforderung;
-  Mtx *Belegungsmatrix_cp = Belegungsmatrix;
-
-  int *Betriebsmittelrestvektor = calc_free_array(Belegungsmatrix, verfuegbar);
+Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows, int cols){
   Mtx *Restananforderungsmatrix = make_matrix(rows, cols);
-
-  //Berechne Restananforderungsmatrix
   for(int j = 0; j < cols; j++){
     for(int i = 0; i < rows; i++){
       Restananforderungsmatrix -> data[i][j] = Gesamtanforderung -> data[i][j] - Belegungsmatrix -> data[i][j];
     }
   }
+  return Restananforderungsmatrix;
+}
 
+Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols){
+
+  //Berechne Freie Betriebsmittel
+  int *Betriebsmittelrestvektor = calc_free_array(Belegungsmatrix, verfuegbar);
+  Mtx* Restananforderungsmatrix = calc_Restanforderung(Gesamtanforderung, Belegungsmatrix, rows, cols);
+
+  //suche nach Prozesse
+  int counter = 0;
+  int Prozess = 0;
   int del = 0;
+  Status state = UNDEFINED; //0 undefindes, -1 unsafe, 1 safe
 
-    int Prozess = find_prozess(Restananforderungsmatrix, Betriebsmittelrestvektor, rows, cols);
-    printf("\n%d\n", Prozess);
-    if(Prozess == -1){
-      printf("kein Prozess gefunden\n");
-    } else {
-      del = 1;
-    }
+  printMtx(Restananforderungsmatrix);
+  for(int i = 0; i < rows; i++)
+    printf("%d", Betriebsmittelrestvektor[i]);
+printf("\n");
 
-    if(del == 1){
-      //Bullshit
-      for(int i = 0; i < rows; i++){
-        Restananforderungsmatrix -> data[i][Prozess] = Restananforderungsmatrix -> data[i][Prozess-1];
-        Betriebsmittelrestvektor[i] = Betriebsmittelrestvektor[i] + Restananforderungsmatrix -> data[i][Prozess-1];
-        Belegungsmatrix_cp -> data[i][Prozess] = Belegungsmatrix_cp -> data[i][Prozess-1];
+ while(state == UNDEFINED){
+    for(int i = 0; i < cols; i++){
+      counter = 0;
+      for(int j = 0; j < rows; j++){
+        printf("i:%d\n",i);
+        printf("j:%d\n",j);
+        printf("%d >= %d\n",Betriebsmittelrestvektor[j], Restananforderungsmatrix -> data[j][i]);
+        if(Betriebsmittelrestvektor[j] >= Restananforderungsmatrix -> data[j][i]){
+          counter ++;
+          printf("c %d\n",counter );
+          if(counter == rows){
+            Prozess = i;
+            printf("%d\n", Prozess);
+            del = 1;
+            break;
+           }
+           continue;
+         }else{
+           break;
+         }
+      }
+      if(del == 1){
+        break;
+      }
+      printf("''''''''''''i: %d\n", i);
+      printf("//////////////%d\n", cols -1);
+      if(i == cols-1){
+        printf("undsafe\n");
+        state = UNSAFE;
       }
     }
+    printf("%d\n", Prozess);
 
-    printMtx(Belegungsmatrix);
-    printMtx(Restananforderungsmatrix);
-
+    if(del == 1){
+      for(int j = 0; j < rows; j++){
+        Betriebsmittelrestvektor[j] = Betriebsmittelrestvektor[j] + Belegungsmatrix -> data[j][Prozess];
+      }
+      cols --;
+    }
+    if(cols == 0){
+      //safe
+      state = SAFE;
+   }
+ }
+    return state;
 }
-  //suche nach Prozesse
-//   int counter = 0;
-//   int Prozess = 0;
-//   int del = 0;
-//   int status = 0; //0 undefindes, -1 unsafe, 1 safe
-//
-//   while(status == 0)
-//     for(int i = 0; i < Restananforderungsmatrix -> cols; i++){
-//       counter = 0;
-//       for(int j = 0; j < Restananforderungsmatrix -> rows; j++){
-//         if(Betriebsmittelrestvektor[i] >= Restananforderungsmatrix -> data[i][j]){
-//           counter ++;
-//           if(counter == Restananforderungsmatrix -> rows){
-//             Prozess = j;
-//             printf("%d\n", Prozess);
-//             del = 1;
-//             break;
-//            }
-//            continue;
-//          }else {
-//            break;
-//          }
-//       }
-//
-//       if(del == 1){
-//         break;
-//       }
-//       if(i == cols - 1){
-//         //set safe
-//         status = -1;
-//         printf("unsafe\n");
-//       }
-//     }
-//     if(del == 1){
-//       for(int i = 0; i < rows; i++){
-//         Restananforderungsmatrix -> data[Prozess][i] = Restananforderungsmatrix -> data[Prozess-1][i];
-//         Betriebsmittelrestvektor[i] = Betriebsmittelrestvektor[i] + Restananforderungsmatrix -> data[Prozess][i];
-//         Belegungsmatrix -> data[Prozess][i] = Belegungsmatrix -> data[Prozess-1][i];
-//       }
-//       rows --;
-//     }
-//     if(rows == 0){
-//       //safe
-//       status = 1;
-//     }
-// }

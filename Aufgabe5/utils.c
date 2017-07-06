@@ -16,7 +16,7 @@ void print_matrix_in_file(FILE* fp, Mtx *matrix){
   for(int j = 0; j < matrix -> cols; j++){
     for(int i = 0; i < matrix -> rows; i++){
       fprintf(fp, "%d", matrix -> data[i][j]);
-      if(i < matrix -> rows && j < matrix -> cols-1 ){
+      if(i < matrix -> cols && j < matrix -> rows-1 ){
         fprintf(fp, " ");
       }
     }
@@ -33,7 +33,7 @@ void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int B
 }
 
 void free_mtx(Mtx* Matrix){
-  for(int x = 0; x < Matrix -> rows; x++){
+  for(int x = 0; x < Matrix -> cols; x++){
       free(Matrix -> data[x]);
   }
   free(Matrix -> data);
