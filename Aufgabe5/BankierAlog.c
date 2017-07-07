@@ -19,7 +19,7 @@ int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
   }
    for(int i = 0; i < Matrix -> cols; i++){
      for(int j = 0; j < Matrix -> rows; j++){
-       array[j] = array[j] - Matrix -> data[j][i];
+       array[j] = array[j] + Matrix -> data[j][i];
      }
    }
  return array;
@@ -46,17 +46,7 @@ Status deadlock_avoidance(Mtx* Operation_Matrix, Mtx* Restananforderungsmatrix, 
       printf("Operation %d\n", operation);
       // while(awnser = UNDEFINED){
       //
-      // }
-
-
-
-
-
-
-
-
-
-
+      //
     }
 
   return answer;

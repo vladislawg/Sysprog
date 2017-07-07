@@ -36,11 +36,15 @@ int main(int argc, char *argv[]){
     Belegungsmatrix = make_matrix(Betriebsmittel, Prozesse);
     verfuegbar = calloc(Betriebsmittel, sizeof(int));
 
+    printf("%d %d\n", Prozesse, Betriebsmittel);
+
     for(int j = 0; j < Prozesse; j++){
       for(int i = 0; i < Betriebsmittel; i++){
         fscanf(input_file, "%2d", &Gesamtanforderung -> data[i][j]);
       }
     }
+
+    printMtx(Gesamtanforderung);
 
 
     for(int j = 0; j < Prozesse; j++){
@@ -48,6 +52,8 @@ int main(int argc, char *argv[]){
         fscanf(input_file, "%2d", &Belegungsmatrix -> data[i][j]);
       }
     }
+
+    printMtx(Belegungsmatrix);
 
     for(int j = 0; j < Betriebsmittel; j++){
       fscanf(input_file, "%2d", &verfuegbar[j]);
@@ -58,6 +64,7 @@ int main(int argc, char *argv[]){
 
     if(!check_matrix(Gesamtanforderung)) exit(1);
     if(!check_matrix(Belegungsmatrix)) exit(1);
+    printf("(lala)\n");
 
     //um zu wissen wie viel Speicher man für die Matrix Reservieren muss
     int linecounter = 0;
@@ -134,7 +141,7 @@ int main(int argc, char *argv[]){
 
   Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, verfuegbar, Betriebsmittel, Prozesse);
   if(state == UNSAFE){
-    printf("undsafe\n");
+    printf("unsafe\n");
     fprintf(output_file, "\nUNSICHER\n");
   }
 
@@ -142,8 +149,9 @@ int main(int argc, char *argv[]){
     printf("safe\n");
     fprintf(output_file, "\nSICHER\n");
   }
+  printf("lala\n");
 
-  Status awnser = deadlock_avoidance(Matrix, Restananforderungsmatrix, frei);
+  //Status awnser = deadlock_avoidance(Matrix, Restananforderungsmatrix, frei);
 
   fclose(output_file);
   free_mtx(Gesamtanforderung);

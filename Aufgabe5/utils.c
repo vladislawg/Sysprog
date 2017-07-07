@@ -31,7 +31,7 @@ bool check_matrix(Mtx* Matrix){
 
   for(int j = 0; j < Matrix -> cols; j++){
     for(int i = 0; i < Matrix -> rows; i++){
-      if(Matrix -> data[j][i] == 0){
+      if(Matrix -> data[i][j] == 0){
         counter ++;
       }
     }
