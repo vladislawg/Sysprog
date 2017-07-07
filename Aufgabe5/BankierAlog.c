@@ -43,5 +43,6 @@ Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int rows, int c
       state = SAFE;
    }
   }
+  free(Betriebsmittelrestvektor);
     return state;
 }

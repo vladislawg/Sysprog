@@ -35,6 +35,6 @@ void deadlock_avoidance(FILE *fp, Mtx *Restananforderungsmatrix, Mtx* Operation_
     }
     counter ++;
   }
-
+  free(frei);
 
 }
