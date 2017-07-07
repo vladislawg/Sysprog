@@ -17,9 +17,7 @@ all: $(BIN)
 $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJS)
 
-# pull in dependencies for .o files
 -include $(OBJS:.o=.d)
-
 
 clean:
 	$(RM) $(BIN) $(OBJS) *.d

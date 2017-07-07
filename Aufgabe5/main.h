@@ -22,8 +22,6 @@ void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int B
 
 int *create_Matrix_Array(int array[], int start, int end);
 
-int to_int(int ascii);
-
 int *calc_free_array(Mtx* Matrix, int verfuegbar[]);
 
 Mtx* make_matrix(int n_rows, int n_cols);
