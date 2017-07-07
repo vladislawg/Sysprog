@@ -26,6 +26,7 @@ int main(int argc, char *argv[]){
   Mtx *Belegungsmatrix = NULL;
   int *verfuegbar = NULL;
   Mtx *Matrix = NULL;
+  int linecounter = 0;
 
   if(input_file == NULL){
     printf("Could not open input file!\n");
@@ -64,10 +65,8 @@ int main(int argc, char *argv[]){
 
     if(!check_matrix(Gesamtanforderung)) exit(1);
     if(!check_matrix(Belegungsmatrix)) exit(1);
-    printf("(lala)\n");
+    
 
-    //um zu wissen wie viel Speicher man für die Matrix Reservieren muss
-    int linecounter = 0;
     char c;
     while((c = fgetc(input_file)) != EOF){
       if(c == 'A' || c == 'R') linecounter ++;
@@ -149,7 +148,9 @@ int main(int argc, char *argv[]){
     printf("safe\n");
     fprintf(output_file, "\nSICHER\n");
   }
-  printf("lala\n");
+
+  if(linecounter > 0)
+    deadlock_avoidance(output_file, Restananforderungsmatrix, Matrix, frei, Betriebsmittel, Prozesse);
 
   //Status awnser = deadlock_avoidance(Matrix, Restananforderungsmatrix, frei);
 

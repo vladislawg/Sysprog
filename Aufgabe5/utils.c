@@ -26,6 +26,16 @@ void print_matrix_in_file(FILE* fp, Mtx *matrix){
   }
 }
 
+void printMtx(Mtx *Matrix){
+  printf("printMtx\n");
+  for(int j = 0; j < Matrix -> cols; j++){
+    for(int i = 0; i < Matrix -> rows; i++){
+      printf("%d ", Matrix -> data[i][j]);
+    }
+    printf("\n");
+  }
+}
+
 bool check_matrix(Mtx* Matrix){
   int counter = 0;
 
@@ -42,6 +52,13 @@ bool check_matrix(Mtx* Matrix){
   return true;
 }
 
+void print_array(int *array, int array_len){
+  for(int i = 0; i < array_len; i++){
+    printf("%d", array[i]);
+  }
+  printf("\n");
+}
+
 void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int Betriebsmittel, int Anzahl, int index){
   printf("\nAdd Elements to Matrix\n");
   Matrix -> data[0][index] = operation;
@@ -56,4 +73,24 @@ void free_mtx(Mtx* Matrix){
   }
   free(Matrix -> data);
   free(Matrix);
+}
+
+void printfile(FILE *fp, Mtx* Restananforderungsmatrix, int *array, int rows, int operation, int Prozesse_no, int Betriebsmittel, int Anzahl){
+
+  if(operation == 1){
+    fprintf(fp, "Operation: %c %d %d %d\n", 'A', Prozesse_no, Betriebsmittel, Anzahl);
+  }else if(operation == 0){
+    fprintf(fp, "Operation: %c %d %d %d\n", 'R', Prozesse_no, Betriebsmittel, Anzahl);
+  }
+
+  fprintf(fp, "\nRestanforderungen:\n");
+  print_matrix_in_file(fp, Restananforderungsmatrix);
+
+  fprintf(fp, "\nf: ");
+  for(int i = 0; i < rows; i++){
+    fprintf(fp, " %d ", array[i]);
+  }
+  fprintf(fp, "\n\n");
+
+
 }

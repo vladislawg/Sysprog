@@ -2,16 +2,6 @@
 
 #include "main.h"
 
-void printMtx(Mtx *Matrix){
-  printf("printMtx\n");
-  for(int j = 0; j < Matrix -> cols; j++){
-    for(int i = 0; i < Matrix -> rows; i++){
-      printf("%d ", Matrix -> data[i][j]);
-    }
-    printf("\n");
-  }
-}
-
 int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
   int *array = calloc(Matrix -> rows, sizeof(int*));
   for(int j = 0; j < Matrix -> rows; j++){
@@ -19,7 +9,7 @@ int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
   }
    for(int i = 0; i < Matrix -> cols; i++){
      for(int j = 0; j < Matrix -> rows; j++){
-       array[j] = array[j] + Matrix -> data[j][i];
+       array[j] = array[j] - Matrix -> data[j][i];
      }
    }
  return array;
@@ -33,24 +23,6 @@ Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows
     }
   }
   return Restananforderungsmatrix;
-}
-
-
-Status deadlock_avoidance(Mtx* Operation_Matrix, Mtx* Restananforderungsmatrix, int *Betriebsmittelrestvektor){
-  Status answer = UNDEFINED;
-
-  //Operation herausfinden
-  int operation;
-    for(int j = 0; j < Operation_Matrix -> cols; j++){
-      operation = Operation_Matrix -> data[0][j];
-      printf("Operation %d\n", operation);
-      // while(awnser = UNDEFINED){
-      //
-      //
-    }
-
-  return answer;
-
 }
 
 Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols){

@@ -2,7 +2,8 @@ BIN = Prog
 SRC = \
 	main.c \
 	utils.c \
-	BankierAlog.c
+	BankierAlog.c \
+	deadlock_avoidance.c
 
 CC	 = gcc
 CFLAGS   = -g -Wall -std=c99

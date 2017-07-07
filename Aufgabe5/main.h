@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct _Mtx{
   int rows;
@@ -31,6 +32,10 @@ Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows
 
 Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols);
 
-Status deadlock_avoidance(Mtx* Operation_Matrix, Mtx* Restananforderungsmatrix, int *Betriebsmittelrestvektor);
-
 bool check_matrix(Mtx* Matrix);
+
+void deadlock_avoidance(FILE* fp, Mtx *Restananforderungsmatrix, Mtx* Operation_Matrix,  int *frei, int rows, int cols);
+
+void print_array(int *array, int array_len);
+
+void printfile(FILE *fp, Mtx* Restananforderungsmatrix, int *array, int rows, int operation, int Prozesse_no, int Betriebsmittel, int Anzahl);
