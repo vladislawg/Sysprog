@@ -7,11 +7,13 @@ int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
   for(int j = 0; j < Matrix -> rows; j++){
     array[j] = verfuegbar[j];
   }
+  for(int j = 0; j < Matrix -> rows; j++){
    for(int i = 0; i < Matrix -> cols; i++){
-     for(int j = 0; j < Matrix -> rows; j++){
        array[j] = array[j] - Matrix -> data[j][i];
      }
    }
+
+   print_array(array, Matrix -> rows);
  return array;
 }
 

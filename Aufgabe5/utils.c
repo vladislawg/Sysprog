@@ -68,7 +68,7 @@ void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int B
 }
 
 void free_mtx(Mtx* Matrix){
-  for(int x = 0; x < Matrix -> cols; x++){
+  for(int x = 0; x < Matrix -> rows; x++){
       free(Matrix -> data[x]);
   }
   free(Matrix -> data);

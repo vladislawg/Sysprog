@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
 
     if(!check_matrix(Gesamtanforderung)) exit(1);
     if(!check_matrix(Belegungsmatrix)) exit(1);
-    
+
 
     char c;
     while((c = fgetc(input_file)) != EOF){
