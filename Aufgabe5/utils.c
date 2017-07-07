@@ -91,6 +91,27 @@ void printfile(FILE *fp, Mtx* Restananforderungsmatrix, int *array, int rows, in
     fprintf(fp, " %d ", array[i]);
   }
   fprintf(fp, "\n\n");
+}
 
+int *calc_free_array(Mtx* Matrix, int verfuegbar[]){
+  int *array = calloc(Matrix -> rows, sizeof(int*));
+  for(int j = 0; j < Matrix -> rows; j++){
+    array[j] = verfuegbar[j];
+  }
+  for(int j = 0; j < Matrix -> rows; j++){
+   for(int i = 0; i < Matrix -> cols; i++){
+       array[j] = array[j] - Matrix -> data[j][i];
+     }
+   }
+ return array;
+}
 
+Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows, int cols){
+  Mtx *Restananforderungsmatrix = make_matrix(rows, cols);
+  for(int j = 0; j < cols; j++){
+    for(int i = 0; i < rows; i++){
+      Restananforderungsmatrix -> data[i][j] = Gesamtanforderung -> data[i][j] - Belegungsmatrix -> data[i][j];
+    }
+  }
+  return Restananforderungsmatrix;
 }

@@ -30,7 +30,7 @@ Mtx* make_matrix(int n_rows, int n_cols);
 
 Mtx* calc_Restanforderung(Mtx* Gesamtanforderung, Mtx* Belegungsmatrix, int rows, int cols);
 
-Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int verfuegbar[], int rows, int cols);
+Status bankieralgo(Mtx *Gesamtanforderung, Mtx *Belegungsmatrix, int rows, int cols, int *Betriebsmittelrestvektor, Mtx* Restananforderungsmatrix );
 
 bool check_matrix(Mtx* Matrix);
 

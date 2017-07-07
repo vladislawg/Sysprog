@@ -138,7 +138,7 @@ int main(int argc, char *argv[]){
   fprintf(output_file, "\n");
 
 
-  Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, verfuegbar, Betriebsmittel, Prozesse);
+  Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse,frei,  Restananforderungsmatrix);
   if(state == UNSAFE){
     printf("unsafe\n");
     fprintf(output_file, "\nUNSICHER\n");
@@ -152,12 +152,12 @@ int main(int argc, char *argv[]){
   if(linecounter > 0)
     deadlock_avoidance(output_file, Restananforderungsmatrix, Matrix, frei, Betriebsmittel, Prozesse);
 
-  //Status awnser = deadlock_avoidance(Matrix, Restananforderungsmatrix, frei);
-
   fclose(output_file);
   free_mtx(Gesamtanforderung);
   free_mtx(Belegungsmatrix);
   free_mtx(Restananforderungsmatrix);
+  free_mtx(Matrix);
+  free(frei);
   free(verfuegbar);
 
   return 0;
