@@ -86,9 +86,9 @@ void printfile(FILE *fp, Mtx* Restananforderungsmatrix, int *array, int rows, in
   fprintf(fp, "\nRestanforderungen:\n");
   print_matrix_in_file(fp, Restananforderungsmatrix);
 
-  fprintf(fp, "\nf: ");
+  fprintf(fp, "\nf:");
   for(int i = 0; i < rows; i++){
-    fprintf(fp, " %d ", array[i]);
+    fprintf(fp, "  %d", array[i]);
   }
   fprintf(fp, "\n\n");
 }

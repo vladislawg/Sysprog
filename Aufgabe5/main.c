@@ -33,6 +33,9 @@ int main(int argc, char *argv[]){
     exit(1);
   }else{
     fscanf(input_file, "%2d\n%2d", &Prozesse, &Betriebsmittel);
+
+    if(Prozesse == 0 || Betriebsmittel == 0) exit(1);
+
     Gesamtanforderung = make_matrix(Betriebsmittel, Prozesse);
     Belegungsmatrix = make_matrix(Betriebsmittel, Prozesse);
     verfuegbar = calloc(Betriebsmittel, sizeof(int));
@@ -60,7 +63,7 @@ int main(int argc, char *argv[]){
       fscanf(input_file, "%2d", &verfuegbar[j]);
     }
 
-    if(Gesamtanforderung == NULL || Belegungsmatrix == NULL || Prozesse == 0 || Betriebsmittel == 0 || verfuegbar == NULL)
+    if(Gesamtanforderung == NULL || Belegungsmatrix == NULL || verfuegbar == NULL)
       exit(1);
 
     if(!check_matrix(Gesamtanforderung)) exit(1);
@@ -119,38 +122,36 @@ int main(int argc, char *argv[]){
   fprintf(output_file, "Belegungen:\n");
   print_matrix_in_file(output_file, Belegungsmatrix);
   fprintf(output_file, "\n");
-  fprintf(output_file, "verfügbar: ");
-  for(int i = 0; i < Betriebsmittel; i++){
-    fprintf(output_file, " %d ", verfuegbar[i]);
-  }
+  fprintf(output_file, "verfügbar:");
+  for(int i = 0; i < Betriebsmittel; i++)
+    fprintf(output_file, "  %d", verfuegbar[i]);
 
+///////////////////////////////////////////////////////////////////
   Mtx *Restananforderungsmatrix = calc_Restanforderung(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse);
   int *frei = calc_free_array(Belegungsmatrix, verfuegbar);
+//////////////////////////////////////////////////////////////////
+
+
   fprintf(output_file, "\n");
   fprintf(output_file, "\n");
   fprintf(output_file, "Restanforderungen:\n");
   print_matrix_in_file(output_file, Restananforderungsmatrix);
   fprintf(output_file, "\n");
-  fprintf(output_file, "frei: ");
+  fprintf(output_file, "frei:");
   for(int i = 0; i < Betriebsmittel; i++){
-    fprintf(output_file, " %d ", frei[i]);
+    fprintf(output_file, "  %d", frei[i]);
   }
   fprintf(output_file, "\n");
 
-
-  Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse,frei,  Restananforderungsmatrix);
-  if(state == UNSAFE){
-    printf("unsafe\n");
-    fprintf(output_file, "\nUNSICHER\n");
-  }
-
-  if(state == SAFE){
-    printf("safe\n");
-    fprintf(output_file, "\nSICHER\n");
-  }
-
+///////////////////////////////////////////////////////////////////////////
+  Status state = bankieralgo(Gesamtanforderung, Belegungsmatrix, Betriebsmittel, Prozesse, calc_free_array(Belegungsmatrix, verfuegbar),  Restananforderungsmatrix);
+  if(state == UNSAFE) fprintf(output_file, "\nUNSICHER\n");
+  if(state == SAFE)   fprintf(output_file, "\nSICHER\n");
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
   if(linecounter > 0)
-    deadlock_avoidance(output_file, Restananforderungsmatrix, Matrix, frei, Betriebsmittel, Prozesse);
+    deadlock_avoidance(output_file, Restananforderungsmatrix, Matrix, calc_free_array(Belegungsmatrix, verfuegbar), Betriebsmittel, Prozesse);
+//////////////////////////////////////////////////////////////////////////
 
   fclose(output_file);
   free_mtx(Gesamtanforderung);
@@ -159,6 +160,5 @@ int main(int argc, char *argv[]){
   free_mtx(Matrix);
   free(frei);
   free(verfuegbar);
-
   return 0;
 }
