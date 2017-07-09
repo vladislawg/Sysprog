@@ -40,15 +40,13 @@ int main(int argc, char *argv[]){
     Belegungsmatrix = make_matrix(Betriebsmittel, Prozesse);
     verfuegbar = calloc(Betriebsmittel, sizeof(int));
 
-    printf("%d %d\n", Prozesse, Betriebsmittel);
-
     for(int j = 0; j < Prozesse; j++){
       for(int i = 0; i < Betriebsmittel; i++){
         fscanf(input_file, "%2d", &Gesamtanforderung -> data[i][j]);
       }
     }
 
-    printMtx(Gesamtanforderung);
+  //  printMtx(Gesamtanforderung);
 
 
     for(int j = 0; j < Prozesse; j++){
@@ -57,7 +55,7 @@ int main(int argc, char *argv[]){
       }
     }
 
-    printMtx(Belegungsmatrix);
+  //  printMtx(Belegungsmatrix);
 
     for(int j = 0; j < Betriebsmittel; j++){
       fscanf(input_file, "%2d", &verfuegbar[j]);
@@ -87,13 +85,11 @@ int main(int argc, char *argv[]){
       if(c == 'A'){
         operation = 1;    //1 für alocate (A)
         fscanf(input_file, "%2d %2d %2d", &Prozessnumber, &Betriebs, &Anzahl);
-        printf("%d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
         add_Elements_to_Matrix(Matrix, operation, Prozessnumber, Betriebs, Anzahl, i);
         i++;
       }else if(c == 'R'){
         operation = 0;    //0 für Release (R)
         fscanf(input_file, "%2d %2d %2d", &Prozessnumber, &Betriebs, &Anzahl);
-        printf("%d %d %d %d",operation, Prozessnumber, Betriebs, Anzahl);
         add_Elements_to_Matrix(Matrix, operation, Prozessnumber, Betriebs, Anzahl, i);
         i++;
       }else{
@@ -101,7 +97,7 @@ int main(int argc, char *argv[]){
       }
     }
     fclose(input_file);
-    printMtx(Matrix);
+  //  printMtx(Matrix);
   }
 
 //Write output file

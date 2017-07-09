@@ -60,6 +60,7 @@ void print_array(int *array, int array_len){
 }
 
 void add_Elements_to_Matrix(Mtx* Matrix, int operation, int Prozessnummer, int Betriebsmittel, int Anzahl, int index){
+  //
   printf("\nAdd Elements to Matrix\n");
   Matrix -> data[0][index] = operation;
   Matrix -> data[1][index] = Prozessnummer;
